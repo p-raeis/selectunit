@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SelectUnitModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Courses">
+    <Key>
+      <PropertyRef Name="CourseId" />
+    </Key>
+    <Property Name="CourseId" Type="int" Nullable="false" />
+    <Property Name="FieldId" Type="int" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Professor" Type="nvarchar" MaxLength="50" />
+    <Property Name="Time" Type="nvarchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="Students">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Family" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" MaxLength="150" />
+    <Property Name="Phone" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Gender" Type="bit" />
+    <Property Name="FieldId" Type="int" />
+  </EntityType>
+  <EntityType Name="TakenCourse">
+    <Key>
+      <PropertyRef Name="TakenCourseId" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="CoureseId" Type="int" Nullable="false" />
+    <Property Name="TakenCourseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Courses_Courses">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+    <End Role="Courses1" Type="Self.Courses" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="CourseId" />
+      </Principal>
+      <Dependent Role="Courses1">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TakenCourse_Courses">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+    <End Role="TakenCourse" Type="Self.TakenCourse" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="CourseId" />
+      </Principal>
+      <Dependent Role="TakenCourse">
+        <PropertyRef Name="CoureseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TakenCourse_Students">
+    <End Role="Students" Type="Self.Students" Multiplicity="1" />
+    <End Role="TakenCourse" Type="Self.TakenCourse" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TakenCourse">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SelectUnitModelStoreContainer">
+    <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TakenCourse" EntityType="Self.TakenCourse" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Courses_Courses" Association="Self.FK_Courses_Courses">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="Courses1" EntitySet="Courses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TakenCourse_Courses" Association="Self.FK_TakenCourse_Courses">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="TakenCourse" EntitySet="TakenCourse" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TakenCourse_Students" Association="Self.FK_TakenCourse_Students">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="TakenCourse" EntitySet="TakenCourse" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
